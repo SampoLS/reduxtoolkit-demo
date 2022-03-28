@@ -1,25 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import UserCard from "./components/UserCard";
+import {
+  clearExistingUsers,
+  fetchUsers,
+  getUsers,
+} from "./features/usersSlice";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default function App() {
+  const users = useSelector(getUsers);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchUsers());
+
+    return () => {
+      dispatch(clearExistingUsers());
+    };
+  }, [dispatch]);
+
+  const renderedUsers =
+    users.length === 0 ? (
+      <div className="loading">...Loading</div>
+    ) : (
+      users.map((user, index) => {
+        return (
+          <UserCard key={index} username={user.login} url={user.avatar_url} />
+        );
+      })
+    );
+
+  return <div className="App">{renderedUsers}</div>;
 }
-
-export default App;
