@@ -21,7 +21,7 @@ const usersSlice = createSlice({
   },
   extraReducers(builder) {
     builder.addCase(fetchUsers.fulfilled, (state, action) => {
-      state.users.push(...action.payload);
+      state.users = action.payload;
     });
   },
 });

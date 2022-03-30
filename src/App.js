@@ -1,34 +1,36 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Spinner } from "./components/Spinner";
+
 import UserCard from "./components/UserCard";
-import {
-  clearExistingUsers,
-  fetchUsers,
-  getUsers,
-} from "./features/usersSlice";
+import { fetchQuotes, getQuotes } from "./features/quotesSlice";
+import { fetchUsers, getUsers } from "./features/usersSlice";
 
 export default function App() {
-  const users = useSelector(getUsers);
   const dispatch = useDispatch();
+
+  const users = useSelector(getUsers);
+  const [quote] = useSelector(getQuotes);
 
   useEffect(() => {
     dispatch(fetchUsers());
-
-    return () => {
-      dispatch(clearExistingUsers());
-    };
+    dispatch(fetchQuotes());
   }, [dispatch]);
 
-  const renderedUsers =
-    users.length === 0 ? (
-      <div className="loading">...Loading</div>
-    ) : (
-      users.map((user, index) => {
-        return (
-          <UserCard key={index} username={user.login} url={user.avatar_url} />
-        );
-      })
-    );
+  const renderedUsers = quote ? (
+    users.map((user, index) => {
+      return (
+        <UserCard
+          key={index}
+          username={user.login}
+          url={user.avatar_url}
+          quote={quote}
+        />
+      );
+    })
+  ) : (
+    <Spinner />
+  );
 
   return <div className="App">{renderedUsers}</div>;
 }

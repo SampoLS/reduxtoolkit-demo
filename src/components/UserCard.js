@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
 
-export default function UserCard({ username, url }) {
+export default function UserCard({ username, url, quote }) {
+  if (!quote) {
+    return null;
+  }
+
   return (
     <Link to={`/${username}`}>
       <div className="card">
@@ -10,10 +14,7 @@ export default function UserCard({ username, url }) {
           </div>
           <div>{username}</div>
         </div>
-        <div className="text">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptate,
-          adipisci.
-        </div>
+        <div className="text">{quote.content}</div>
       </div>
     </Link>
   );
