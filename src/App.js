@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Spinner } from "./components/Spinner";
+import TodosList from "./components/TodosList";
 
 import UserCard from "./components/UserCard";
 import { fetchQuotes, getQuotes } from "./features/quotesSlice";
@@ -32,5 +33,10 @@ export default function App() {
     <Spinner />
   );
 
-  return <div className="App">{renderedUsers}</div>;
+  return (
+    <div className="App">
+      <TodosList />
+      {renderedUsers}
+    </div>
+  );
 }
